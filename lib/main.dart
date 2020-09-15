@@ -1,4 +1,5 @@
 import 'package:GenerationBridgeMobile/pages/call_page.dart';
+import 'package:GenerationBridgeMobile/pages/init_page.dart';
 import 'package:GenerationBridgeMobile/pages/login_page.dart';
 import 'package:GenerationBridgeMobile/pages/main_page.dart';
 import 'package:GenerationBridgeMobile/pages/splash_page.dart';
@@ -11,8 +12,12 @@ class GenerationBridge extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/SplashPage',
+      theme: ThemeData(
+        fontFamily: 'NotoSansCJKkr',
+      ),
       routes: {
-        '/': (context) => MainPage(),
+        '/': (context) => InitPage(),
+        '/Main': (context) => MainPage(),
         '/SplashPage': (context) => SplashScreen(),
         '/Main/CallPage': (context) => CallPage(),
         '/Login': (context) => LoginPage()

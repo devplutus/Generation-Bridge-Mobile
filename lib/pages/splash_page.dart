@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:GenerationBridgeMobile/utils/lib.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -8,13 +9,20 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var _opacity = 0.0;
   startTime() async {
-    var _duration = new Duration(seconds: 2);
-    return new Timer(_duration, navigationPage);
+    await Timer(Duration(seconds: 1), setOpacity);
+    Timer(Duration(seconds: 3), navigationPage);
   }
 
   void navigationPage() {
-    Navigator.of(context).pushReplacementNamed('/Login');
+    Navigator.of(context).pushReplacementNamed('/');
+  }
+
+  void setOpacity() async {
+    setState(() {
+      _opacity = 1.0;
+    });
   }
 
   @override
@@ -26,14 +34,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: HexColor('#FF7979'),
       child: Center(
-        child: Text(
-          'Generation Bridge',
-          style: TextStyle(
-            color: Colors.redAccent[300],
-            decoration: TextDecoration.none,
-            fontSize: 35,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.8,
+          child: AnimatedOpacity(
+            opacity: _opacity,
+            duration: Duration(seconds: 1),
+            child: Image(
+              image: AssetImage('lib/assets/images/GB_LOGO.png'),
+            ),
           ),
         ),
       ),
