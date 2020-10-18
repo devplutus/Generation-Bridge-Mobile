@@ -1,5 +1,6 @@
 import 'package:GenerationBridgeMobile/utils/lib.dart';
 import 'package:GenerationBridgeMobile/widgets/init_page_quickguide.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class InitPage extends StatefulWidget {
@@ -18,23 +19,59 @@ class _InitPageState extends State<InitPage> {
           decoration: BoxDecoration(
               color: HexColor('#FF7979'),
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(50),
-                bottomRight: Radius.circular(50),
+                bottomLeft: Radius.circular(40),
+                bottomRight: Radius.circular(40),
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey,
                   blurRadius: 10,
-                  spreadRadius: 5,
+                  spreadRadius: 2,
                   offset: Offset(0, 3),
                 )
               ]),
         ),
         Positioned(
-          bottom: 20,
-          child: Image(
-            width: MediaQuery.of(context).size.width * 0.6,
-            image: AssetImage('lib/assets/images/GB_LOGO.png'),
+          bottom: 10,
+          child: Column(
+            children: [
+              Image(
+                width: MediaQuery.of(context).size.width * 0.45,
+                image: AssetImage('lib/assets/images/GB_LOGO.png'),
+              ),
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    text: 'G',
+                    style: TextStyle(
+                      color: HexColor('#30459A'),
+                      fontSize: 24,
+                      letterSpacing: 3.0,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'eneration ',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      TextSpan(text: 'B'),
+                      TextSpan(
+                        text: 'ridge',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(padding: EdgeInsets.only(top: 10)),
+              Text(
+                '세대간 연결 다리',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -73,9 +110,7 @@ class _InitPageState extends State<InitPage> {
         ),
         textColor: Colors.white,
         color: HexColor('#FF7979'),
-        onPressed: () {
-          // Respond to button press
-        },
+        onPressed: pushToSignupPage,
         child: Text(
           '회원가입',
           style: TextStyle(
@@ -95,7 +130,11 @@ class _InitPageState extends State<InitPage> {
           children: [
             _widgetHeader(),
             Padding(padding: EdgeInsets.only(top: 70.0)),
-            InitPageQuickGuide(),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 220.0,
+              child: InitPageQuickGuide(),
+            ),
             Padding(padding: EdgeInsets.only(top: 40.0)),
             _widgetLoginButton(),
             Padding(padding: EdgeInsets.symmetric(vertical: 25)),
@@ -112,6 +151,10 @@ class _InitPageState extends State<InitPage> {
   }
 
   void pushToLoginPage() {
-    Navigator.of(context).pushNamed('/Login');
+    Navigator.pushNamed(context, '/Login');
+  }
+
+  void pushToSignupPage() {
+    Navigator.pushNamed(context, '/Signup1');
   }
 }

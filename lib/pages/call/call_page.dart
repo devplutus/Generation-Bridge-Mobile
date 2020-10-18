@@ -2,7 +2,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 
 class CallPage extends StatefulWidget {
-  final appID = '40b5f1c813ef4caebbb1513fa88ec8c3';
+  static const String APP_ID = '40b5f1c813ef4caebbb1513fa88ec8c3';
   final channelName;
 
   CallPage({Key key, this.channelName}) : super(key: key);
@@ -12,8 +12,10 @@ class CallPage extends StatefulWidget {
 }
 
 class _CallPageState extends State<CallPage> {
+  static const String APP_ID = '40b5f1c813ef4caebbb1513fa88ec8c3';
   final _infoStrings = <String>[];
   final _users = <int>[];
+  bool muted = false;
 
   @override
   void dispose() {
@@ -42,8 +44,8 @@ class _CallPageState extends State<CallPage> {
   }
 
   Future<void> _initAgoraEngin() async {
-    print('${widget.appID} ${widget.channelName}');
-    await AgoraRtcEngine.create(widget.appID);
+    print('${APP_ID} ${widget.channelName}');
+    await AgoraRtcEngine.create(APP_ID);
     await AgoraRtcEngine.enableVideo();
     await AgoraRtcEngine.setChannelProfile(ChannelProfile.Communication);
     await AgoraRtcEngine.setClientRole(ClientRole.Broadcaster);

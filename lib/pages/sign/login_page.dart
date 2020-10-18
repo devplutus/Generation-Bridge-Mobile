@@ -1,5 +1,9 @@
+import 'package:GenerationBridgeMobile/providers/_userInfoProvider.dart';
 import 'package:GenerationBridgeMobile/utils/lib.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,11 +23,38 @@ class _LoginPageState extends State<LoginPage> {
   bool _isSave = false;
 
   Widget _widgetMainLogo() {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.62,
-      child: Image(
-        image: AssetImage('lib/assets/images/GB_LOGO.png'),
-      ),
+    return Column(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.45,
+          child: Image(
+            image: AssetImage('lib/assets/images/GB_LOGO.png'),
+          ),
+        ),
+        Center(
+          child: RichText(
+            text: TextSpan(
+              text: 'G',
+              style: TextStyle(
+                color: HexColor('#30459A'),
+                fontSize: 24,
+                letterSpacing: 3.0,
+              ),
+              children: [
+                TextSpan(
+                  text: 'eneration ',
+                  style: TextStyle(color: Colors.white),
+                ),
+                TextSpan(text: 'B'),
+                TextSpan(
+                  text: 'ridge',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -31,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
     return Text(
       '로그인',
       style: TextStyle(
-          color: HexColor('#FF7979'),
+          color: Theme.of(context).primaryColor,
           fontSize: 27,
           fontWeight: FontWeight.bold),
     );
@@ -94,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
             });
           },
           checkColor: Colors.white,
-          activeColor: HexColor('#FF7979'),
+          activeColor: Theme.of(context).primaryColor,
         ),
         Text(
           '로그인 정보 저장',
@@ -104,12 +135,14 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _widgetLoginButton() {
+  Widget _widgetLoginButton(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 50.0,
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+          authenticationUser();
+        },
         child: Text(
           '로그인',
           style: TextStyle(
@@ -118,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        color: HexColor('#FF7979'),
+        color: Theme.of(context).primaryColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35),
         ),
@@ -126,10 +159,31 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void authenticationUser() async {
+    var email = _emailEditingController.text.trim().toString();
+    var password = _passwordEditingController.text.trim().toString();
+    if (email == '') {
+      UtilLibrary.alertDialog(context, '이메일을 입력해주세요.');
+    }
+
+    if (password == '') {
+      UtilLibrary.alertDialog(context, '비밀번호를 입력해주세요.');
+    }
+
+    var result = await Provider.of<UserInfoProvider>(context, listen: false)
+        .loginWithEmailAndPassword(email, password);
+
+    if (result == true) {
+      Navigator.of(context).pushNamed('/Main');
+    } else {
+      UtilLibrary.alertDialog(context, '이메일 또는 비밀번호를 확인해주세요.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor('#FF7979'),
+      backgroundColor: Theme.of(context).primaryColor,
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
@@ -137,9 +191,8 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Padding(padding: EdgeInsets.only(top: 30)),
               _widgetMainLogo(),
-              Padding(padding: EdgeInsets.only(top: 60)),
+              Padding(padding: EdgeInsets.only(top: 50)),
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.6,
@@ -158,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 20.0),
                     _widgetLoginFormSave(),
                     SizedBox(height: 60.0),
-                    _widgetLoginButton(),
+                    _widgetLoginButton(context),
                   ],
                 ),
               ),

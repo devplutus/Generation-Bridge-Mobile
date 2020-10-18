@@ -1,7 +1,7 @@
 import 'package:GenerationBridgeMobile/utils/lib.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class InitPageQuickGuide extends StatefulWidget {
   @override
@@ -32,17 +32,17 @@ class _InitPageQuickGuideState extends State<InitPageQuickGuide> {
 
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 220.0,
-        aspectRatio: 2.3,
-        autoPlay: true,
-        reverse: false,
-        enableInfiniteScroll: false,
-        autoPlayInterval: Duration(seconds: 4),
-        enlargeCenterPage: true,
-      ),
-      items: getCarouselList(),
+    List<Widget> _widgetList = getCarouselList();
+    return Swiper(
+      containerHeight: 230.0,
+      autoplay: true,
+      autoplayDelay: 2000,
+      itemCount: 4,
+      viewportFraction: 0.7,
+      scale: 0.5,
+      itemBuilder: (context, index) {
+        return _widgetList[index];
+      },
     );
   }
 
@@ -79,7 +79,7 @@ class _InitPageQuickGuideState extends State<InitPageQuickGuide> {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: '함께할 그린이에게 ',
+            text: '함께할 짝꿍에게',
             style: getRegularStyle(),
             children: [
               TextSpan(
@@ -108,7 +108,7 @@ class _InitPageQuickGuideState extends State<InitPageQuickGuide> {
                 text: '\r\n함께해요',
                 style: getBoldStyle(),
               ),
-              TextSpan(text: '를 보내면 입양 성공.')
+              TextSpan(text: '를 보내면 매칭 성공')
             ],
           ),
         ),
